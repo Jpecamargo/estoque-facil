@@ -1,37 +1,55 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Drawer } from "expo-router/drawer";
+import { Ionicons } from "@expo/vector-icons";
+import { Button, TouchableOpacity } from "react-native";
+import { Link } from "expo-router";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Drawer screenOptions={{headerShown: false}}>
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: "Início",
+            headerShown: true,
+            title: "Alerta de estoque",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="category"
+          options={{
+            drawerLabel: "Categroias",
+            title: "Cadastro de categorias",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="clipboard" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="product"
+          options={{
+            drawerLabel: "Produtos",
+            title: "Cadastro de produtos",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="cube" color={color} size={size} />
+            ),
+            headerRight: () => (
+              <TouchableOpacity>
+                <Ionicons
+                  name="add"
+                  size={24}
+                  color="#007aff"
+                  style={{ marginRight: 20 }}
+                />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+      </Drawer>
+    </GestureHandlerRootView>
   );
 }
