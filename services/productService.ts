@@ -16,7 +16,7 @@ const addProduct = async (product: Product) => {
   const { name, barcode, category_id, fractional, quantity, min_quantity } =
     product;
 
-  await db.runAsync(
+  await (await db).runAsync(
     `INSERT INTO products (name, barcode, category_id, fractional, quantity, min_quantity) VALUES (?, ?, ?, ?, ?, ?);`,
     [name, barcode, category_id, fractional ? 1 : 0, quantity, min_quantity]
   );
@@ -24,7 +24,7 @@ const addProduct = async (product: Product) => {
 
 // Função para buscar todos os produtos
 const getProducts = async () => {
-  const products = await db.getAllAsync("SELECT * FROM products");
+  const products = await (await db).getAllAsync("SELECT * FROM products");
   return products;
 };
 
@@ -32,7 +32,7 @@ const getProducts = async () => {
 const getProductById = async (
   productId: number,
 ) => {
-  const product = await db.getFirstAsync("SELECT * FROM products where id = (?)", [productId]);
+  const product = await (await db).getFirstAsync("SELECT * FROM products where id = (?)", [productId]);
   return product;
 };
 
