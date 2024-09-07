@@ -1,11 +1,11 @@
 import * as SQLite from "expo-sqlite";
 
-const db = SQLite.openDatabaseAsync("database.db");
+const db = SQLite.openDatabaseSync("database.db");
 
 const createTables = (): Promise<void> => {
   return new Promise(async (resolve, reject) => {
     const DATABASE_VERSION = 1;
-    let { user_version: currentDbVersion } = (await (await db).getFirstAsync<{
+    let { user_version: currentDbVersion } = (await db.getFirstAsync<{
       user_version: number;
     }>("PRAGMA user_version")) ?? { user_version: 0 };
 
@@ -14,13 +14,12 @@ const createTables = (): Promise<void> => {
       return;
     }
     if (currentDbVersion === 0) {
-      try {
-        await (await db).execAsync(`CREATE TABLE IF NOT EXISTS categories (
+      await db.execAsync(`CREATE TABLE IF NOT EXISTS categories (
                               id INTEGER PRIMARY KEY AUTOINCREMENT,
                               name TEXT NOT NULL
                         );`);
 
-        await (await db).execAsync(`CREATE TABLE IF NOT EXISTS products (
+      await db.execAsync(`CREATE TABLE IF NOT EXISTS products (
                               id INTEGER PRIMARY KEY AUTOINCREMENT,
                               name TEXT NOT NULL,
                               barcode TEXT,
@@ -30,13 +29,10 @@ const createTables = (): Promise<void> => {
                               min_quantity REAL,
                               FOREIGN KEY(category_id) REFERENCES categories(id)
                         );`);
-        currentDbVersion = 1;
+      currentDbVersion = 1;
 
-        await (await db).runAsync(`PRAGMA user_version = ${currentDbVersion}`);
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
+      await db.runAsync(`PRAGMA user_version = ${currentDbVersion}`);
+      resolve();
     }
     resolve();
   });
