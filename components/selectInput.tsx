@@ -11,7 +11,7 @@ interface SelectInputProps {
 
 export const SelectInput = ({ label, items, onChange }: SelectInputProps) => {
   return (
-    <View style={[styles.inputGroup, {marginBottom:10}]}>
+    <View style={[styles.inputGroup, { marginBottom: 10 }]}>
       <Text style={styles.label}>{label}</Text>
       <RNPickerSelect style={{}} onValueChange={onChange} items={items} />
     </View>
