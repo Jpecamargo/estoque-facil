@@ -39,7 +39,14 @@ export default function Layout(props: any) {
           ),
         }}
       />
-      <Stack.Screen name="newProduct" options={{title: 'Cadastro de produto'}}/>
+      <Stack.Screen
+        name="newProduct"
+        options={{ title: "Cadastro de produto" }}
+      />
+      <Stack.Screen
+        name="editProduct/[id]"
+        options={{ title: "Editar produto" }}
+      />
     </Stack>
   );
 }

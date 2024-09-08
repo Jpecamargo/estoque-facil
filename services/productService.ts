@@ -12,29 +12,46 @@ type Product = {
 };
 
 // Função para adicionar um produto
-const addProduct = async (product: Product) => {
+const addProduct = (product: Product) => {
   const { name, barcode, category_id, fractional, quantity, min_quantity } =
     product;
 
-  await (await db).runAsync(
+  db.runSync(
     `INSERT INTO products (name, barcode, category_id, fractional, quantity, min_quantity) VALUES (?, ?, ?, ?, ?, ?);`,
     [name, barcode, category_id, fractional ? 1 : 0, quantity, min_quantity]
   );
 };
 
+//Função para atualizar um produto
+const updateProduct = (product: Product) => {
+  const { id, name, barcode, category_id, fractional, quantity, min_quantity } =
+    product;
+  if (!id) return;
+
+  db.runSync(
+    `UPDATE products SET name = ?, barcode = ?, category_id = ?, fractional = ?, quantity = ?, min_quantity = ? WHERE id = ?;`,
+    [name, barcode, category_id, fractional ? 1 : 0, quantity, min_quantity, id]
+  );
+};
+
+//Função para deletar um produto
+const deleteProduct = (productId: number) => {
+  db.runSync(`DELETE FROM products WHERE id = ?`, [productId]);
+};
+
 // Função para buscar todos os produtos
-const getProducts = async () => {
-  const products = await (await db).getAllAsync("SELECT * FROM products");
+const getProducts = () => {
+  const products = db.getAllSync("SELECT * FROM products");
   return products;
 };
 
 // Função para buscar produto por id
-const getProductById = async (
-  productId: number,
-) => {
-  const product = await (await db).getFirstAsync("SELECT * FROM products where id = (?)", [productId]);
+const getProductById = (productId: number) => {
+  const product = db.getFirstSync("SELECT * FROM products where id = (?)", [
+    productId,
+  ]);
   return product;
 };
 
 // Exporta as funções de produto
-export { addProduct, getProducts, getProductById, Product };
+export { addProduct, updateProduct, deleteProduct, getProducts, getProductById, Product };

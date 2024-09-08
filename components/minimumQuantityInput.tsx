@@ -1,16 +1,31 @@
 import styles from "@/constants/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TextInput, Text } from "react-native";
 
 // Define os tipos das propriedades do componente
 interface MinimumQuantityInputProps {
   isFractional: boolean;
+  defaultValue?: string;
+  onChange: (value: string) => void;
 }
 
 const MinimumQuantityInput: React.FC<MinimumQuantityInputProps> = ({
   isFractional,
+  defaultValue,
+  onChange,
 }) => {
-  const [quantity, setQuantity] = useState<string>("");
+  const [quantity, setQuantity] = useState<string>("0");
+
+  useEffect(() => {
+    onChange(quantity);
+  }, [quantity]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      setQuantity(defaultValue);
+    }
+  }, [defaultValue]);
+
 
   // Função para lidar com a mudança no campo de input
   const handleInputChange = (value: string) => {

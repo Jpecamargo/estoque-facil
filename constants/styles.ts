@@ -41,9 +41,6 @@ const styles = StyleSheet.create({
   checkbox: {
     margin: 8,
   },
-  itemList: {
-    
-  }
 });
 
 export default styles;

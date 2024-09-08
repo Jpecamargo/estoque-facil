@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 
 // Define os tipos das propriedades do componente
 interface AccountantInputProps {
   isFractional: boolean;
+  defaultValue?: string;
+  onChange: (value: string) => void;
 }
 
-const AccountantInput: React.FC<AccountantInputProps> = ({ isFractional }) => {
+const AccountantInput: React.FC<AccountantInputProps> = ({
+  isFractional,
+  defaultValue,
+  onChange,
+}) => {
   const [quantity, setQuantity] = useState<string>("0");
+
+  useEffect(() => {
+    onChange(quantity);
+  }, [quantity]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      setQuantity(defaultValue);
+    }
+  }, [defaultValue]);
 
   // Função para incrementar a quantidade
   const handleIncrement = () => {

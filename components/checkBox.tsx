@@ -1,15 +1,23 @@
 import styles from "@/constants/styles";
 import Checkbox from "expo-checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 
 interface CheckboxProps {
   label: string;
+  defaultValue?: boolean;
   onChange: (value: boolean) => void;
 }
 
-export default function InputCheckbox({ label, onChange }: CheckboxProps) {
+export default function InputCheckbox({ label, defaultValue, onChange }: CheckboxProps) {
   const [isChecked, setChecked] = useState(false);
+
+  useEffect(() => {
+    if (defaultValue !== undefined) {
+      setChecked(defaultValue ? true : false);
+    }
+  }, [defaultValue]);
+
 
   return (
     <View
@@ -26,7 +34,10 @@ export default function InputCheckbox({ label, onChange }: CheckboxProps) {
       <Checkbox
         style={styles.checkbox}
         value={isChecked}
-        onValueChange={setChecked}
+        onValueChange={(e) => {
+          setChecked(e);
+          onChange(!isChecked);
+        }}
         color={isChecked ? "#007aff" : undefined}
       />
       <Text style={[styles.label, { marginTop: 0 }]}>{label}</Text>

@@ -5,15 +5,16 @@ import RNPickerSelect from "react-native-picker-select";
 
 interface SelectInputProps {
   label: string;
+  defaultValue?: { label: string; value: string | number };
   items: { label: string; value: string }[];
   onChange: (value: string) => void;
 }
 
-export const SelectInput = ({ label, items, onChange }: SelectInputProps) => {
+export const SelectInput = ({ label, defaultValue, items, onChange }: SelectInputProps) => {
   return (
     <View style={[styles.inputGroup, { marginBottom: 10 }]}>
       <Text style={styles.label}>{label}</Text>
-      <RNPickerSelect style={{}} onValueChange={onChange} items={items} />
+      <RNPickerSelect style={{}} onValueChange={onChange} placeholder={defaultValue} items={items} />
     </View>
   );
 };
