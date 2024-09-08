@@ -1,9 +1,13 @@
 import FormInput from "@/components/formInput";
-import styles from "@/constants/styles";
-import { Ionicons } from "@expo/vector-icons";
-import { Button, TextInput, View } from "react-native";
+import { addCategory } from "@/services/categoryService";
+import { useNavigation } from "expo-router";
+import { useState } from "react";
+import { Button, View } from "react-native";
 
 export default function NewCategory() {
+  const [name, setName] = useState("");
+  const navigation = useNavigation();
+
   return (
     <View>
       <View
@@ -14,8 +18,11 @@ export default function NewCategory() {
           paddingLeft: 20,
         }}
       >
-        <FormInput label={"Nome"} />
-        <Button title={"Salvar"} onPress={() => {}} />
+        <FormInput label={"Nome"} onChange={(e) => setName(e)}/>
+        <Button title={"Salvar"} onPress={() => {
+          addCategory({name})
+          navigation.goBack()
+        }} />
       </View>
     </View>
   );

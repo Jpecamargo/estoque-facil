@@ -33,10 +33,10 @@ const getCategories = () => {
 };
 
 // Função para buscar categroia por id
-const getCategoryById = async (categoryId: number) => {
+const getCategoryById = (categoryId: number) => {
   const category = db.getFirstSync("SELECT * FROM categories where id = (?)", [categoryId]);
   return category;
 };
 
 // Exporta as funções de categoria
-export { addCategory, getCategories, getCategoryById, Category };
+export { addCategory, updateCategory, deleteCategory, getCategories, getCategoryById, Category };

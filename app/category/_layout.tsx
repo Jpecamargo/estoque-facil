@@ -43,6 +43,10 @@ export default function Layout(props: any) {
         name="newCategory"
         options={{ title: "Cadastro de categoria" }}
       />
+      <Stack.Screen
+        name="editCategory/[id]"
+        options={{ title: "Editar categoria" }}
+      />
     </Stack>
   );
 }
