@@ -53,5 +53,25 @@ const getProductById = (productId: number) => {
   return product;
 };
 
+// Função para buscar produtos com estoque inferior ao mínimo
+const getProductsLowStock = () => {
+  const products = db.getAllSync(`
+    SELECT p.id,p.name as product_name, c.name as category_name, min_quantity, quantity 
+    FROM products p 
+    JOIN categories c on p.category_id = c.id 
+    WHERE quantity < min_quantity 
+    ORDER BY c.name, p.name
+  `);
+  return products;
+};
+
 // Exporta as funções de produto
-export { addProduct, updateProduct, deleteProduct, getProducts, getProductById, Product };
+export {
+  addProduct,
+  updateProduct,
+  deleteProduct,
+  getProducts,
+  getProductById,
+  getProductsLowStock,
+  Product,
+};

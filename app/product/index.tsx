@@ -61,7 +61,6 @@ export default function Product() {
             name={product.name}
             onDelete={handleDelete.bind(null, product.id)}
             onEdit={() => {
-              router.setParams({ id: product.id });
               // @ts-ignore
               router.navigate(`/product/editProduct/${product.id}`);
             }}
