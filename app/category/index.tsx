@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { usePathname, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Alert } from "react-native";
 
 export default function Caregory() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -15,6 +15,26 @@ export default function Caregory() {
   const handleLoadData = () => {
     const data = getCategories();
     setCategories(data);
+  };
+
+  const handleDelete = (id: number) => {
+    Alert.alert(
+      "Deletar categoria",
+      "Tem certeza de que deseja excluir esta categoria?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            deleteCategory(id);
+            handleLoadData();
+          },
+        },
+      ]
+    );
   };
 
   useEffect(() => {
@@ -39,10 +59,7 @@ export default function Caregory() {
           <ItemList
             key={category.id}
             name={category.name}
-            onDelete={() => {
-              deleteCategory(category.id);
-              handleLoadData();
-            }}
+            onDelete={handleDelete.bind(null, category.id)}
             onEdit={() => {
               router.setParams({ id: category.id });
               // @ts-ignore

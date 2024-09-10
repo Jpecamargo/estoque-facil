@@ -38,7 +38,6 @@ export default function ItemList({ name, onEdit, onDelete }: ItemListProps) {
             />
           </TouchableOpacity>
         </View>
-        {/* Divider */}
       </View>
       <View
         style={{
