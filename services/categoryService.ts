@@ -15,6 +15,9 @@ const addCategory = (category: Category) => {
 
 // Função para deletar uma categoria
 const deleteCategory = (categoryId: number) => {
+  // Verifica se a categoria possui produtos
+  const products = db.getAllSync(`SELECT * FROM products WHERE category_id = (?);`, [categoryId]);
+  if (products.length > 0) throw new Error("Categoria possui produtos"); 
   db.runSync(`DELETE FROM categories WHERE id = (?);`, [categoryId]);
 };
 

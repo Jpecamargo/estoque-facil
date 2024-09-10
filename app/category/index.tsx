@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { usePathname, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, Alert } from "react-native";
+import { View, Text, TextInput, Alert, ToastAndroid } from "react-native";
 
 export default function Caregory() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -29,8 +29,15 @@ export default function Caregory() {
         {
           text: "OK",
           onPress: () => {
-            deleteCategory(id);
-            handleLoadData();
+            try {
+              deleteCategory(id);
+              handleLoadData();
+            } catch (error) {
+              ToastAndroid.show(
+                "Não foi possível deletar a categoria, possui produtos associados",
+                ToastAndroid.SHORT
+              );
+            }
           },
         },
       ]
