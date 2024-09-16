@@ -24,7 +24,7 @@ export default function RootLayout() {
           <Drawer.Screen
             name="category"
             options={{
-              drawerLabel: "Categroias",
+              drawerLabel: "Categorias",
               title: "Cadastro de categorias",
               drawerIcon: ({ color, size }) => (
                 <Ionicons name="clipboard" color={color} size={size} />
