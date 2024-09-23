@@ -7,7 +7,7 @@ import { getCategories } from "@/services/categoryService";
 import { addProduct } from "@/services/productService";
 import { useNavigation } from "expo-router";
 import { useState } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, KeyboardAvoidingView, Platform } from "react-native";
 
 export default function newProduct() {
   const navigation = useNavigation();
@@ -26,7 +26,10 @@ export default function newProduct() {
   });
 
   return (
-    <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 200 : 0} // adjust the offset if needed
+    >
       <View
         style={{
           justifyContent: "center",
@@ -70,6 +73,6 @@ export default function newProduct() {
           }}
         />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
