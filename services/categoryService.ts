@@ -16,15 +16,18 @@ const addCategory = (category: Category) => {
 // Função para deletar uma categoria
 const deleteCategory = (categoryId: number) => {
   // Verifica se a categoria possui produtos
-  const products = db.getAllSync(`SELECT * FROM products WHERE category_id = (?);`, [categoryId]);
-  if (products.length > 0) throw new Error("Categoria possui produtos"); 
+  const products = db.getAllSync(
+    `SELECT * FROM products WHERE category_id = (?);`,
+    [categoryId]
+  );
+  if (products.length > 0) throw new Error("Categoria possui produtos");
   db.runSync(`DELETE FROM categories WHERE id = (?);`, [categoryId]);
 };
 
 // Função para atualizar uma categoria
 const updateCategory = (category: Category) => {
   const { id, name } = category;
-  if (!id) return
+  if (!id) return;
 
   db.runSync(`UPDATE categories SET name = (?) WHERE id = (?);`, [name, id]);
 };
@@ -37,9 +40,27 @@ const getCategories = () => {
 
 // Função para buscar categroia por id
 const getCategoryById = (categoryId: number) => {
-  const category = db.getFirstSync("SELECT * FROM categories where id = (?)", [categoryId]);
+  const category = db.getFirstSync("SELECT * FROM categories where id = (?)", [
+    categoryId,
+  ]);
   return category;
 };
 
+const getCaregoriesByName = (name: string) => {
+  const categories = db.getAllSync(
+    `SELECT * FROM categories WHERE upper(name) LIKE upper(?);`,
+    [`%${name}%`]
+  );
+  return categories;
+}
+
 // Exporta as funções de categoria
-export { addCategory, updateCategory, deleteCategory, getCategories, getCategoryById, Category };
+export {
+  addCategory,
+  updateCategory,
+  deleteCategory,
+  getCategories,
+  getCategoryById,
+  getCaregoriesByName,
+  Category,
+};

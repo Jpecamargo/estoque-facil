@@ -1,6 +1,10 @@
 import ItemList from "@/components/itemList";
 import styles from "@/constants/styles";
-import { deleteCategory, getCategories } from "@/services/categoryService";
+import {
+  deleteCategory,
+  getCaregoriesByName,
+  getCategories,
+} from "@/services/categoryService";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { usePathname, useRouter } from "expo-router";
@@ -44,6 +48,15 @@ export default function Caregory() {
     );
   };
 
+  const handleSearch = (name: string) => {
+    if (!name || name === "") {
+      handleLoadData();
+      return;
+    }
+    const data = getCaregoriesByName(name);
+    setCategories(data);
+  };
+
   useEffect(() => {
     handleLoadData();
   }, [isFocused]);
@@ -59,7 +72,7 @@ export default function Caregory() {
         }}
       >
         <Ionicons name="search" size={20} />
-        <TextInput style={styles.searchInput} />
+        <TextInput style={styles.searchInput} onChangeText={handleSearch}/>
       </View>
       <View>
         {categories.map((category) => (
