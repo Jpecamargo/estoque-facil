@@ -65,6 +65,11 @@ const getProductsLowStock = () => {
   return products;
 };
 
+const getProductsByName = (name: string) => {
+  const products = db.getAllSync(`SELECT * FROM products WHERE upper(name) LIKE upper(?)`, [`%${name}%`]);
+  return products;
+}
+
 // Exporta as funções de produto
 export {
   addProduct,
@@ -73,5 +78,6 @@ export {
   getProducts,
   getProductById,
   getProductsLowStock,
+  getProductsByName,
   Product,
 };

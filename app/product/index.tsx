@@ -1,6 +1,6 @@
 import ItemList from "@/components/itemList";
 import styles from "@/constants/styles";
-import { deleteProduct, getProducts } from "@/services/productService";
+import { deleteProduct, getProducts, getProductsByName } from "@/services/productService";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { useRouter } from "expo-router";
@@ -37,6 +37,15 @@ export default function Product() {
     );
   };
 
+  const handleSearch = (name: string) => {
+    if (!name || name === "") {
+      handleLoadData();
+      return;
+    }
+    const data = getProductsByName(name);
+    setProducts(data);
+  }
+
   useEffect(() => {
     handleLoadData();
   }, [isFocused]);
@@ -52,7 +61,7 @@ export default function Product() {
         }}
       >
         <Ionicons name="search" size={20} />
-        <TextInput style={styles.searchInput} />
+        <TextInput style={styles.searchInput} onChangeText={handleSearch}/>
       </View>
       <View>
         {products.map((product) => (
